@@ -3,11 +3,9 @@
   <component name="EclipseCodeFormatterProjectSettings">
     <option name="projectSpecificProfile">
       <ProjectSpecificProfile>
-        <option name="formatter" value="ECLIPSE" />
-        <option name="importOrderConfigFilePath" value="$USER_HOME$/hybris_my_cruise/hybris/config/project.importorder" />
+        <option name="importOrderConfigFilePath" value="$USER_HOME$/carnival/hybris/config/project.importorder" />
         <option name="importOrderFromFile" value="true" />
-        <option name="pathToConfigFileJava" value="$USER_HOME$/hybris_my_cruise/hybris/config/code formatter.xml" />
-        <option name="selectedJavaProfile" value="Project Delivery Code Formatter" />
+        <option name="pathToConfigFileJava" value="$USER_HOME$/carnival/hybris/config/code style.xml" />
       </ProjectSpecificProfile>
     </option>
   </component>
