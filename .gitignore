@@ -1,2 +1,11 @@
+#COMPILED
 target/
+
+# INTELLIJ
 .idea
+com.springsource.sts.config.flow.prefs
+org.sonar.ide.eclipse.core.prefs
+idea-module-files
+*.iml
+**/.idea
+out/**
