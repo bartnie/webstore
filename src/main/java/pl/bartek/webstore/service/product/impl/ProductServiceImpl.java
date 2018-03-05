@@ -5,8 +5,10 @@
 
 package pl.bartek.webstore.service.product.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Required;
 
@@ -35,12 +37,28 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Product> findByCriteria(final Map<String, List<String>> criteria) {
-		return productDao.findByCriteria(criteria);
+	public List<Product> findByPriceAndCriteria(final Map<String, List<String>> criteria, final BigDecimal priceLow,
+					final BigDecimal priceHigh) {
+		List<Product> productsByCriteria = productDao.findByCriteria(criteria);
+		if (priceLow != null && priceHigh != null) {
+			productsByCriteria = productsByCriteria.stream()
+							.filter(product -> product.getUnitPrice().compareTo(priceLow) > 0
+											&& product.getUnitPrice().compareTo(priceHigh) < 0)
+							.collect(Collectors.toList());
+		} else if (priceLow != null) {
+			productsByCriteria = productsByCriteria.stream()
+							.filter(product -> product.getUnitPrice().compareTo(priceLow) > 0)
+							.collect(Collectors.toList());
+		} else if (priceHigh != null) {
+			productsByCriteria = productsByCriteria.stream()
+							.filter(product -> product.getUnitPrice().compareTo(priceHigh) < 0)
+							.collect(Collectors.toList());
+		}
+		return productsByCriteria;
 	}
 
 	@Override
-	public void save(final Product productToSave) {
+	public void add(final Product productToSave) {
 		productDao.save(productToSave);
 	}
 

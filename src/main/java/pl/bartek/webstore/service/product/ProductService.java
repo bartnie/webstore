@@ -5,6 +5,7 @@
 
 package pl.bartek.webstore.service.product;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -15,11 +16,11 @@ public interface ProductService {
 
 	List<Product> findByCategory(final String category);
 
-	List<Product> findAll() ;
+	List<Product> findAll();
 
-	List<Product> findByCriteria(Map<String,List<String>> criteria);
+	List<Product> findByPriceAndCriteria(Map<String, List<String>> criteria, BigDecimal priceLow, BigDecimal priceHigh);
 
-	void save(final Product productToSave);
+	void add(final Product productToSave);
 
 	void removeById(final String id);
 }

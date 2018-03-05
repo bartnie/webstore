@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -24,6 +25,11 @@
                         <p>${product.description}</p>
                         <p>${product.unitPrice} PLN</p>
                         <p>Liczba sztuk w magazynie: ${product.unitsInStock}</p>
+                        <p>
+                            <a href="<spring:url value="/products/${product.id}"/>" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-info-sign "></span> Szczegoly
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>

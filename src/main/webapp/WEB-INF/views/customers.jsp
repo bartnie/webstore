@@ -1,9 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  ~ Copyright (c) 2018.
-  ~ Bartosz Niesobski - All rights reserved.
-  --%>
-
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
