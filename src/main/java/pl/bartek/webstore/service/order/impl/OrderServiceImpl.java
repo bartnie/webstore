@@ -6,6 +6,7 @@
 package pl.bartek.webstore.service.order.impl;
 
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sun.javafx.binding.StringFormatter;
 
@@ -18,6 +19,7 @@ public class OrderServiceImpl implements OrderService {
 	private DataAccessObject<Product> productDao;
 
 	@Override
+	@Transactional
 	public void processOrder(final String productId, final int amount) {
 		final Product product = productDao.findById(productId);
 		if (product.getUnitsInStock() < amount) {

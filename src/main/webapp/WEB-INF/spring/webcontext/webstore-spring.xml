@@ -10,7 +10,7 @@
 	   http://www.springframework.org/schema/mvc
 	   http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
 
-	<mvc:annotation-driven/>
+	<mvc:annotation-driven enable-matrix-variables="true"/>
 	<context:component-scan base-package="pl.bartek.webstore"/>
 	<mongo:mongo-client host="localhost" port="27017" id="mongoClient"/>
 	<mongo:db-factory dbname="WebStore-DB" mongo-ref="mongoClient"/>
@@ -42,6 +42,13 @@
 
 	<bean id="productService" class="pl.bartek.webstore.service.product.impl.ProductServiceImpl">
 		<property name="productDao" ref="productDao"/>
+		<property name="categoryMapping">
+			<map>
+				<entry key="smartphone" value="Smart Phone"/>
+				<entry key="laptop" value="Laptop"/>
+				<entry key="tablet" value="Tablet"/>
+			</map>
+		</property>
 	</bean>
 
 	<bean id="customerService" class="pl.bartek.webstore.service.customer.impl.CustomerServiceImpl">

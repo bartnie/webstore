@@ -6,16 +6,18 @@
 package pl.bartek.webstore.service.product.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Required;
 
-import pl.bartek.webstore.dao.DataAccessObject;
+import pl.bartek.webstore.dao.ProductDao;
 import pl.bartek.webstore.entity.Product;
 import pl.bartek.webstore.service.product.ProductService;
 
 public class ProductServiceImpl implements ProductService {
 
-	private DataAccessObject<Product> productDao;
+	private ProductDao productDao;
+	private Map<String, String> categoryMapping;
 
 	@Override
 	public Product findById(final String id) {
@@ -23,8 +25,18 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	public List<Product> findByCategory(final String category) {
+		return productDao.findByCategory(categoryMapping.get(category));
+	}
+
+	@Override
 	public List<Product> findAll() {
 		return productDao.findAll();
+	}
+
+	@Override
+	public List<Product> findByCriteria(final Map<String, List<String>> criteria) {
+		return productDao.findByCriteria(criteria);
 	}
 
 	@Override
@@ -38,7 +50,12 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Required
-	public void setProductDao(final DataAccessObject<Product> productDao) {
+	public void setProductDao(final ProductDao productDao) {
 		this.productDao = productDao;
+	}
+
+	@Required
+	public void setCategoryMapping(final Map categoryMapping) {
+		this.categoryMapping = categoryMapping;
 	}
 }

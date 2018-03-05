@@ -9,13 +9,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Required;
 
-import pl.bartek.webstore.dao.DataAccessObject;
+import pl.bartek.webstore.dao.CustomerDao;
 import pl.bartek.webstore.entity.Customer;
 import pl.bartek.webstore.service.customer.CustomerService;
 
 public class CustomerServiceImpl implements CustomerService {
 
-	private DataAccessObject<Customer> customerDao;
+	private CustomerDao customerDao;
 
 	@Override
 	public List<Customer> findAll() {
@@ -23,7 +23,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Required
-	public void setCustomerDao(final DataAccessObject<Customer> customerDao) {
+	public void setCustomerDao(final CustomerDao customerDao) {
 		this.customerDao = customerDao;
 	}
 }

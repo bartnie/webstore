@@ -6,23 +6,26 @@
 package pl.bartek.webstore.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import com.sun.javafx.binding.StringFormatter;
 
 public abstract class AbstractMongoDao<T> implements DataAccessObject<T> {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractMongoDao.class);
-	private MongoOperations mongoDb;
+	protected MongoOperations mongoDb;
 	private Class<T> entityType;
 
 	@Override
 	public T findById(final String id) {
-		T entity = mongoDb.findById(id, entityType);
+		final T entity = mongoDb.findById(id, entityType);
 		if (entity == null) {
 			logger.error("Couldn't find %s with id %s.", entityType, id);
 			throw new IllegalArgumentException(
@@ -34,6 +37,24 @@ public abstract class AbstractMongoDao<T> implements DataAccessObject<T> {
 	@Override
 	public List<T> findAll() {
 		return mongoDb.findAll(entityType);
+	}
+
+	@Override
+	public List<T> findByCriteria(final Map<String, List<String>> criteria) {
+		final Query query = new Query();
+		for (final String criterionKey : criteria.keySet()) {
+			query.addCriteria(Criteria.where(criterionKey).regex(prepareRegEx(criteria.get(criterionKey)), "i"));
+		}
+		return mongoDb.find(query, entityType);
+	}
+
+	private String prepareRegEx(final List<String> criteria) {
+		final StringBuilder regEx = new StringBuilder();
+		for (final String criterion : criteria) {
+			regEx.append("(").append(criterion).append(")|");
+		}
+		regEx.deleteCharAt(regEx.length() - 1);
+		return regEx.toString();
 	}
 
 	@Override
