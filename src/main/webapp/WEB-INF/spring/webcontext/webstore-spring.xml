@@ -20,6 +20,10 @@
 		<property name="suffix" value=".jsp"/>
 	</bean>
 
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="messages"/>
+	</bean>
+
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg ref="mongoDbFactory"/>
 	</bean>
