@@ -9,3 +9,4 @@ idea-module-files
 *.iml
 **/.idea
 out/**
+**/workspace.xml

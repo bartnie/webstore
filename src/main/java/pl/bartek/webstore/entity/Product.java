@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import pl.bartek.webstore.enums.ProductConditionEnum;
+
 @Document(collection = "products")
 public class Product extends BaseEntity{
 
@@ -20,7 +22,7 @@ public class Product extends BaseEntity{
 	private Long unitsInStock;
 	private Long unitsInOrder;
 	private Boolean discontinued;
-	private String condition;
+	private ProductConditionEnum condition;
 
 	public Product(){}
 
@@ -44,7 +46,7 @@ public class Product extends BaseEntity{
 		return unitPrice;
 	}
 
-	public void setPrice(final BigDecimal unitPrice) {
+	public void setUnitPrice(final BigDecimal unitPrice) {
 		this.unitPrice = unitPrice;
 	}
 
@@ -96,11 +98,11 @@ public class Product extends BaseEntity{
 		this.discontinued = discontinued;
 	}
 
-	public String getCondition() {
+	public ProductConditionEnum getCondition() {
 		return condition;
 	}
 
-	public void setCondition(final String condition) {
+	public void setCondition(final ProductConditionEnum condition) {
 		this.condition = condition;
 	}
 

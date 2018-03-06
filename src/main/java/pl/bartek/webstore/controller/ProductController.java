@@ -13,6 +13,10 @@ import javax.annotation.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.sun.javafx.binding.StringFormatter;
 
 import pl.bartek.webstore.entity.Product;
 import pl.bartek.webstore.service.product.ProductService;
@@ -62,12 +68,17 @@ public class ProductController {
 
 	@RequestMapping(value = "/add")
 	public String getAddProductForm(final Model model) {
-		model.addAttribute("product", new Product());
+		model.addAttribute("product", productService.findById("1"));
 		return "addProduct";
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String addProduct(@ModelAttribute("product") final Product body) {
+	public String addProduct(@ModelAttribute("product") final Product body, final BindingResult result) {
+		final String[] suppressedFields = result.getSuppressedFields();
+		if (suppressedFields.length > 0) {
+			throw new RuntimeException(String.valueOf(StringFormatter.format("Proba wiazania niedozwolonych pol: %s",
+							StringUtils.arrayToCommaDelimitedString(suppressedFields))));
+		}
 		productService.add(body);
 		return "redirect:/products";
 	}
@@ -84,5 +95,10 @@ public class ProductController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void removeProduct(@PathVariable final String id) {
 		productService.removeById(id);
+	}
+
+	@InitBinder
+	public void initialiseBinder(final WebDataBinder binder) {
+		binder.setDisallowedFields("unitsInOrder", "discontinued");
 	}
 }

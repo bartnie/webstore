@@ -40,7 +40,9 @@
             <div class="form-group">
                 <label class="control-label col-lg-2" for="productPrice">Cena</label>
                 <div class="col-lg-10">
-                    <form:input id="productPrice" path="unitPrice" type="text" class="form:input-large"/>
+                    <div class="form:input-prepend">
+                        <form:input id="productPrice" path="unitPrice" type="text" class="form:input-large"/>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
@@ -62,29 +64,17 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-lg-2" for="productInOrder">Zamowione sztuki</label>
-                <div class="col-lg-10">
-                    <form:input id="productInOrder" path="unitsInOrder" type="text" class="form:input-large"/>
-                </div>
-            </div>
-            <div class="form-group">
                 <label class="control-label col-lg-2" for="productDesc">Opis</label>
                 <div class="col-lg-10">
                     <form:input id="productDesc" path="description" type="text" class="form:input-large"/>
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-lg-2" for="productDiscontinued">Wycofany</label>
-                <div class="col-lg-10">
-                    <form:checkbox id="productDiscontinued" path="discontinued"/>
-                </div>
-            </div>
-            <div class="form-group">
                 <label class="control-label col-lg-2" for="productCondition">Stan</label>
                 <div class="col-lg-10">
-                    <form:radiobutton id="productCondition" path="condition" value="New"/> Nowy
-                    <form:radiobutton id="productCondition" path="condition" value="Used"/> Uzywany
-                    <form:radiobutton id="productCondition" path="condition" value="Refurbished"/> Odnowiony
+                    <form:radiobutton id="productCondition" path="condition" value="NEW"/> Nowy
+                    <form:radiobutton id="productCondition" path="condition" value="USED"/> Uzywany
+                    <form:radiobutton id="productCondition" path="condition" value="REFURBISHED"/> Odnowiony
                 </div>
             </div>
             <div class="form-group">
