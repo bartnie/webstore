@@ -11,6 +11,7 @@
 	   http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
 
 	<mvc:annotation-driven enable-matrix-variables="true"/>
+	<mvc:resources mapping="/resource/**" location="/resources/" />
 	<context:component-scan base-package="pl.bartek.webstore"/>
 	<mongo:mongo-client host="localhost" port="27017" id="mongoClient"/>
 	<mongo:db-factory dbname="WebStore-DB" mongo-ref="mongoClient"/>

@@ -10,3 +10,4 @@ idea-module-files
 **/.idea
 out/**
 **/workspace.xml
+*.png

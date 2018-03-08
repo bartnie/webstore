@@ -65,4 +65,12 @@
 			<version>1.7.25</version>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/webapp/resources</directory>
+			</resource>
+		</resources>
+	</build>
 </project>
