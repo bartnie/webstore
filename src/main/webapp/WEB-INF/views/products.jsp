@@ -27,6 +27,8 @@
             <div class="col-sm-6 col-md-3" style="padding-bottom: 15px">
                 <div class="thumbnail">
                     <div class="caption">
+                        <img src="<c:url value="/resource/images/pic_${product.id}.png"></c:url>"
+                        style="display: block; margin-left: auto; margin-right: auto" alt="image" height="150px"/>
                         <h3>${product.name}</h3>
                         <p>${product.description}</p>
                         <p>${product.unitPrice}
