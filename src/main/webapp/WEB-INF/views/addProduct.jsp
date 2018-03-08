@@ -18,6 +18,16 @@
 <section>
     <div class="jumbotron">
         <div class="container">
+            <form action="<c:url value="/j_spring_security_logout"></c:url>" method="post" class="pull-right">
+                <spring:message code="addProduct.header.greeting"/>
+                <b><c:out value="${pageContext.request.remoteUser}"/></b>
+                <fieldset>
+                    <input class="btn btn-danger btn-mini" type="submit" value=
+                    <spring:message code="addProduct.button.logout"/>
+                    >
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                </fieldset>
+            </form>
             <h1>
                 <spring:message code="addProduct.header.header"/>
             </h1>
@@ -107,7 +117,7 @@
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
                     <input type="submit" id="btnAdd" class="btn btn-primary" value=
-                        <spring:message code="addProduct.form.submit.button"/>
+                        <spring:message code="addProduct.form.button.submit"/>
                     />
                 </div>
             </div>

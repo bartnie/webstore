@@ -68,7 +68,7 @@ public class ProductController {
 
 	@RequestMapping(value = "/add")
 	public String getAddProductForm(final Model model) {
-		model.addAttribute("product", productService.findById("1"));
+		model.addAttribute("product", new Product());
 		return "addProduct";
 	}
 
