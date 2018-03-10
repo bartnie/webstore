@@ -5,10 +5,13 @@
 
 package pl.bartek.webstore.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sun.javafx.binding.StringFormatter;
 
@@ -73,14 +77,30 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String addProduct(@ModelAttribute("product") final Product body, final BindingResult result) {
+	public String addProduct(@ModelAttribute("product") final Product body, final BindingResult result,
+					final HttpServletRequest request) {
 		final String[] suppressedFields = result.getSuppressedFields();
 		if (suppressedFields.length > 0) {
 			throw new RuntimeException(String.valueOf(StringFormatter.format("Proba wiazania niedozwolonych pol: %s",
 							StringUtils.arrayToCommaDelimitedString(suppressedFields))));
 		}
+		processFile(body, request);
 		productService.add(body);
 		return "redirect:/products";
+	}
+
+	private void processFile(final Product product, final HttpServletRequest request) {
+		final MultipartFile productImage = product.getProductImage();
+		final String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+		if (productImage != null && !productImage.isEmpty()) {
+			try {
+				productImage.transferTo(new File(rootDirectory.concat("resources\\images\\").concat(product.getId())
+								.concat(".png")));
+			} catch (final IOException e) {
+				throw new RuntimeException("Unsuccesfull attempt to save product image file", e);
+			}
+
+		}
 	}
 
 	@ResponseBody

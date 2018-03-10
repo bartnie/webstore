@@ -8,6 +8,7 @@ package pl.bartek.webstore.entity;
 import java.math.BigDecimal;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.web.multipart.MultipartFile;
 
 import pl.bartek.webstore.enums.ProductConditionEnum;
 
@@ -23,6 +24,7 @@ public class Product extends BaseEntity{
 	private Long unitsInOrder;
 	private Boolean discontinued;
 	private ProductConditionEnum condition;
+	private MultipartFile productImage;
 
 	public Product(){}
 
@@ -104,6 +106,14 @@ public class Product extends BaseEntity{
 
 	public void setCondition(final ProductConditionEnum condition) {
 		this.condition = condition;
+	}
+
+	public MultipartFile getProductImage() {
+		return productImage;
+	}
+
+	public void setProductImage(final MultipartFile productImage) {
+		this.productImage = productImage;
 	}
 
 	@Override
