@@ -3,17 +3,15 @@
  * Bartosz Niesobski - All rights reserved.
  */
 
-package pl.bartek.webstore.entity;
+package pl.bartek.webstore.dto;
 
-import java.io.File;
 import java.math.BigDecimal;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.web.multipart.MultipartFile;
 
 import pl.bartek.webstore.enums.ProductConditionEnum;
 
-@Document(collection = "products")
-public class Product extends BaseEntity {
+public class ProductDto extends BaseDto {
 
 	private String name;
 	private BigDecimal unitPrice;
@@ -24,13 +22,10 @@ public class Product extends BaseEntity {
 	private Long unitsInOrder;
 	private Boolean discontinued;
 	private ProductConditionEnum condition;
-	private File productImage;
-
-	public Product() {
-	}
+	private MultipartFile productImage;
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(final String id) {
@@ -109,34 +104,11 @@ public class Product extends BaseEntity {
 		this.condition = condition;
 	}
 
-	public File getProductImage() {
+	public MultipartFile getProductImage() {
 		return productImage;
 	}
 
-	public void setProductImage(final File productImage) {
+	public void setProductImage(final MultipartFile productImage) {
 		this.productImage = productImage;
-	}
-
-	@Override
-	public boolean equals(final Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-
-		final Product product = (Product) o;
-
-		return id != null ? id.equals(product.id) : product.id == null;
-	}
-
-	@Override
-	public int hashCode() {
-
-		return 31 * (id != null ? id.hashCode() : 0);
-	}
-
-	@Override
-	public String toString() {
-		return "Product{" + "id='" + id + '\'' + ", name='" + name + '\'' + '}';
 	}
 }

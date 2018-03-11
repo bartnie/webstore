@@ -12,13 +12,16 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Required;
 
+import pl.bartek.webstore.converter.ReverseConverter;
 import pl.bartek.webstore.dao.ProductDao;
+import pl.bartek.webstore.dto.ProductDto;
 import pl.bartek.webstore.entity.Product;
 import pl.bartek.webstore.service.product.ProductService;
 
 public class ProductServiceImpl implements ProductService {
 
 	private ProductDao productDao;
+	private ReverseConverter<ProductDto, Product> productReverseConverter;
 	private Map<String, String> categoryMapping;
 
 	@Override
@@ -58,8 +61,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void add(final Product productToSave) {
-		productDao.save(productToSave);
+	public void add(final ProductDto productToSave) {
+		productDao.save(productReverseConverter.convert(productToSave));
 	}
 
 	@Override
@@ -75,5 +78,10 @@ public class ProductServiceImpl implements ProductService {
 	@Required
 	public void setCategoryMapping(final Map categoryMapping) {
 		this.categoryMapping = categoryMapping;
+	}
+
+	@Required
+	public void setProductReverseConverter(final ReverseConverter<ProductDto, Product> productReverseConverter) {
+		this.productReverseConverter = productReverseConverter;
 	}
 }

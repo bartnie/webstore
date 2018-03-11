@@ -5,8 +5,6 @@
 
 package pl.bartek.webstore.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +27,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.sun.javafx.binding.StringFormatter;
 
+import pl.bartek.webstore.dto.ProductDto;
 import pl.bartek.webstore.entity.Product;
 import pl.bartek.webstore.service.product.ProductService;
 
@@ -72,41 +70,25 @@ public class ProductController {
 
 	@RequestMapping(value = "/add")
 	public String getAddProductForm(final Model model) {
-		model.addAttribute("product", new Product());
+		model.addAttribute("product", new ProductDto());
 		return "addProduct";
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String addProduct(@ModelAttribute("product") final Product body, final BindingResult result,
-					final HttpServletRequest request) {
+	public String addProduct(@ModelAttribute("product") final ProductDto body, final BindingResult result) {
 		final String[] suppressedFields = result.getSuppressedFields();
 		if (suppressedFields.length > 0) {
 			throw new RuntimeException(String.valueOf(StringFormatter.format("Proba wiazania niedozwolonych pol: %s",
 							StringUtils.arrayToCommaDelimitedString(suppressedFields))));
 		}
-		processFile(body, request);
 		productService.add(body);
 		return "redirect:/products";
-	}
-
-	private void processFile(final Product product, final HttpServletRequest request) {
-		final MultipartFile productImage = product.getProductImage();
-		final String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-		if (productImage != null && !productImage.isEmpty()) {
-			try {
-				productImage.transferTo(new File(rootDirectory.concat("resources\\images\\").concat(product.getId())
-								.concat(".png")));
-			} catch (final IOException e) {
-				throw new RuntimeException("Unsuccesfull attempt to save product image file", e);
-			}
-
-		}
 	}
 
 	@ResponseBody
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public Product addProductByRest(@PathVariable final String id, @RequestBody final Product body) {
+	public ProductDto addProductByRest(@PathVariable final String id, @RequestBody final ProductDto body) {
 		body.setId(id);
 		productService.add(body);
 		return body;

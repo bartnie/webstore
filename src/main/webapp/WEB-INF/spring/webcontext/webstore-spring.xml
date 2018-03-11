@@ -25,7 +25,7 @@
 		<property name="basename" value="messages"/>
 	</bean>
 
-	<bean id="multiPartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="10240000"/>
 	</bean>
 
@@ -51,6 +51,7 @@
 
 	<bean id="productService" class="pl.bartek.webstore.service.product.impl.ProductServiceImpl">
 		<property name="productDao" ref="productDao"/>
+		<property name="productReverseConverter" ref="productReverseConverter"/>
 		<property name="categoryMapping">
 			<map>
 				<entry key="smartphone" value="Smart Phone"/>
@@ -63,5 +64,7 @@
 	<bean id="customerService" class="pl.bartek.webstore.service.customer.impl.CustomerServiceImpl">
 		<property name="customerDao" ref="customerDao"/>
 	</bean>
+
+	<bean id="productReverseConverter" class="pl.bartek.webstore.converter.ProductReverseConverter"/>
 </beans>
 

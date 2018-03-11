@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import pl.bartek.webstore.dto.ProductDto;
 import pl.bartek.webstore.entity.Product;
 
 public interface ProductService {
@@ -20,7 +21,7 @@ public interface ProductService {
 
 	List<Product> findByPriceAndCriteria(Map<String, List<String>> criteria, BigDecimal priceLow, BigDecimal priceHigh);
 
-	void add(final Product productToSave);
+	void add(final ProductDto productToSave);
 
 	void removeById(final String id);
 }
