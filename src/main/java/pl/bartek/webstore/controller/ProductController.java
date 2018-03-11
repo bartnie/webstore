@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -28,10 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.sun.javafx.binding.StringFormatter;
-
 import pl.bartek.webstore.dto.ProductDto;
-import pl.bartek.webstore.entity.Product;
 import pl.bartek.webstore.service.product.ProductService;
 
 @Controller
@@ -78,8 +74,8 @@ public class ProductController {
 	public String addProduct(@ModelAttribute("product") final ProductDto body, final BindingResult result) {
 		final String[] suppressedFields = result.getSuppressedFields();
 		if (suppressedFields.length > 0) {
-			throw new RuntimeException(String.valueOf(StringFormatter.format("Proba wiazania niedozwolonych pol: %s",
-							StringUtils.arrayToCommaDelimitedString(suppressedFields))));
+			throw new RuntimeException(String.format("Attempt of binding disallowed fields: %s",
+							StringUtils.arrayToCommaDelimitedString(suppressedFields)));
 		}
 		productService.add(body);
 		return "redirect:/products";

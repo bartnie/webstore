@@ -15,8 +15,6 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import com.sun.javafx.binding.StringFormatter;
-
 public abstract class AbstractMongoDao<T> implements DataAccessObject<T> {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractMongoDao.class);
@@ -28,8 +26,7 @@ public abstract class AbstractMongoDao<T> implements DataAccessObject<T> {
 		final T entity = mongoDb.findById(id, entityType);
 		if (entity == null) {
 			logger.error("Couldn't find %s with id %s.", entityType, id);
-			throw new IllegalArgumentException(
-							String.valueOf(StringFormatter.format("Couldn't find %s with id %s.", entityType, id)));
+			throw new IllegalArgumentException(String.format("Couldn't find %s with id %s.", entityType, id));
 		}
 		return entity;
 	}
@@ -67,7 +64,7 @@ public abstract class AbstractMongoDao<T> implements DataAccessObject<T> {
 		try {
 			mongoDb.remove(this.findById(id));
 		} catch (final IllegalArgumentException e) {
-			logger.error(String.valueOf(StringFormatter.format("Couldn't delete %s with id %s.", entityType, id)));
+			logger.error(String.format("Couldn't delete %s with id %s.", entityType, id));
 		}
 	}
 

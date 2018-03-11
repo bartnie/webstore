@@ -29,6 +29,10 @@
 		<property name="maxUploadSize" value="10240000"/>
 	</bean>
 
+	<mvc:interceptors>
+		<bean class="pl.bartek.webstore.interceptor.PerformanceMonitorInterceptor"/>
+	</mvc:interceptors>
+
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg ref="mongoDbFactory"/>
 	</bean>
