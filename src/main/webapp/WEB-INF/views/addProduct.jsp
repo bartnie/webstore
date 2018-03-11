@@ -9,6 +9,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" href="/resources/style.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <title>
         <spring:message code="addProduct.title"/>
@@ -28,6 +29,18 @@
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </fieldset>
             </form>
+            <div class="dropdown pull-right">
+                <button class="dropbtn"><spring:message code="language.button.title"/></button>
+                <div class="dropdown-content">
+
+                    <a href="?lang=pl">
+                        <spring:message code="language.pl"/>
+                    </a>
+                    <a href="?lang=en">
+                        <spring:message code="language.en"/>
+                    </a>
+                </div>
+            </div>
             <h1>
                 <spring:message code="addProduct.header.header"/>
             </h1>

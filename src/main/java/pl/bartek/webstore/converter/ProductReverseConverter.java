@@ -29,8 +29,9 @@ public class ProductReverseConverter implements ReverseConverter<ProductDto, Pro
 		product.setUnitsInOrder(source.getUnitsInOrder());
 		product.setDiscontinued(source.getDiscontinued());
 		product.setCondition(source.getCondition());
-		product.setProductImage(convert(source.getProductImage()));
-
+		if (!source.getProductImage().isEmpty()) {
+			product.setProductImage(convert(source.getProductImage()));
+		}
 		return product;
 	}
 

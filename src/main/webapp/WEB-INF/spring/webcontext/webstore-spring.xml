@@ -29,8 +29,15 @@
 		<property name="maxUploadSize" value="10240000"/>
 	</bean>
 
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="pl"/>
+	</bean>
+
 	<mvc:interceptors>
 		<bean class="pl.bartek.webstore.interceptor.PerformanceMonitorInterceptor"/>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang"/>
+		</bean>
 	</mvc:interceptors>
 
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">

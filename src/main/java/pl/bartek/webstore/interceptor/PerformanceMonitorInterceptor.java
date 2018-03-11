@@ -45,6 +45,7 @@ public class PerformanceMonitorInterceptor implements HandlerInterceptor {
 		final StopWatch stopWatch = stopWatchLocal.get();
 		stopWatch.stop();
 		LOGGER.info(String.format("Summaric time ofprocessing request: %s ms", stopWatch.getTotalTimeSeconds()));
+		stopWatchLocal.set(null);
 		LOGGER.info("================================================================");
 	}
 

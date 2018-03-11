@@ -18,6 +18,6 @@ public class ProductDaoImpl extends AbstractMongoDao<Product> implements Product
 
 	@Override
 	public List<Product> findByCategory(final String category) {
-		return mongoDb.find(new Query(Criteria.where("category").is(category)), Product.class);
+			return mongoDb.find(new Query(Criteria.where("category").is(category)), Product.class);
 	}
 }
