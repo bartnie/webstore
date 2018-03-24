@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,8 +28,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 import pl.bartek.webstore.dto.ProductDto;
+import pl.bartek.webstore.entity.Product;
+import pl.bartek.webstore.exception.NoProductsFoundUnderCategoryException;
+import pl.bartek.webstore.exception.ProductNotFoundException;
 import pl.bartek.webstore.service.product.ProductService;
 
 @Controller
@@ -43,9 +49,14 @@ public class ProductController {
 		return "products";
 	}
 
+
 	@RequestMapping("/category/{category}")
 	public String getProductsInCategory(final Model model, @PathVariable final String category) {
-		model.addAttribute("products", productService.findByCategory(category));
+		final List<Product> products = productService.findByCategory(category);
+		if(products == null || products.isEmpty()){
+			throw new NoProductsFoundUnderCategoryException();
+		}
+		model.addAttribute("products", products);
 		return "products";
 	}
 
@@ -98,5 +109,15 @@ public class ProductController {
 	@InitBinder
 	public void initialiseBinder(final WebDataBinder binder) {
 		binder.setDisallowedFields("unitsInOrder", "discontinued");
+	}
+
+	@ExceptionHandler(ProductNotFoundException.class)
+	public ModelAndView handleError(final HttpServletRequest request, final ProductNotFoundException exception){
+		final ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("invalidProductId", exception.getProductId());
+		modelAndView.addObject("exception", exception);
+		modelAndView.addObject("url", request.getRequestURL()+"?"+request.getQueryString());
+		modelAndView.setViewName("productNotFound");
+		return modelAndView;
 	}
 }

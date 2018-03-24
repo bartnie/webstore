@@ -5,6 +5,7 @@
 
 package pl.bartek.webstore.dao;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -15,18 +16,21 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import pl.bartek.webstore.exception.strategy.NotFoundExceptionStrategy;
+
 public abstract class AbstractMongoDao<T> implements DataAccessObject<T> {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractMongoDao.class);
 	protected MongoOperations mongoDb;
 	private Class<T> entityType;
+	private NotFoundExceptionStrategy notFoundExceptionStrategy;
 
 	@Override
 	public T findById(final String id) {
 		final T entity = mongoDb.findById(id, entityType);
 		if (entity == null) {
 			logger.error("Couldn't find %s with id %s.", entityType, id);
-			throw new IllegalArgumentException(String.format("Couldn't find %s with id %s.", entityType, id));
+			notFoundExceptionStrategy.chooseException(entityType, Collections.singletonMap("id", id));
 		}
 		return entity;
 	}
@@ -76,5 +80,10 @@ public abstract class AbstractMongoDao<T> implements DataAccessObject<T> {
 	@Required
 	public void setEntityType(final Class<T> entityType) {
 		this.entityType = entityType;
+	}
+
+	@Required
+	public void setNotFoundExceptionStrategy(final NotFoundExceptionStrategy notFoundExceptionStrategy) {
+		this.notFoundExceptionStrategy = notFoundExceptionStrategy;
 	}
 }

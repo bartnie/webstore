@@ -46,6 +46,7 @@
 
 	<bean id="abstractDao" abstract="true" class="pl.bartek.webstore.dao.AbstractMongoDao">
 		<property name="mongoDb" ref="mongoTemplate"/>
+		<property name="notFoundExceptionStrategy" ref="notFoundExceptionStrategy"/>
 	</bean>
 
 	<bean id="productDao" class="pl.bartek.webstore.dao.impl.ProductDaoImpl" parent="abstractDao">
@@ -77,5 +78,13 @@
 	</bean>
 
 	<bean id="productReverseConverter" class="pl.bartek.webstore.converter.ProductReverseConverter"/>
+
+	<bean id="notFoundExceptionStrategy" class="pl.bartek.webstore.exception.strategy.NotFoundExceptionStrategy">
+		<property name="entityClassToEnumMapping">
+			<map value-type="pl.bartek.webstore.entity.EntityType">
+				<entry key="pl.bartek.webstore.entity.Product" value="PRODUCT"/>
+			</map>
+		</property>
+	</bean>
 </beans>
 
