@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -82,7 +83,10 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String addProduct(@ModelAttribute("product") final ProductDto body, final BindingResult result) {
+	public String addProduct(@ModelAttribute("product") @Valid final ProductDto body, final BindingResult result) {
+		if(result.hasErrors()){
+			return"addProduct";
+		}
 		final String[] suppressedFields = result.getSuppressedFields();
 		if (suppressedFields.length > 0) {
 			throw new RuntimeException(String.format("Attempt of binding disallowed fields: %s",

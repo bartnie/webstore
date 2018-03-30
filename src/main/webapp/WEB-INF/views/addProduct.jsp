@@ -52,6 +52,7 @@
 </section>
 <section class="container">
     <form:form modelAttribute="product" class="form-horizontal" enctype="multipart/form-data">
+        <form:errors path="*" cssClass="alert alert-danger" element="div"/>
         <fieldset>
             <legend>
                 <spring:message code="addProduct.form.legend"/>

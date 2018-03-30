@@ -10,7 +10,7 @@
 	   http://www.springframework.org/schema/mvc
 	   http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
 
-	<mvc:annotation-driven enable-matrix-variables="true"/>
+	<mvc:annotation-driven enable-matrix-variables="true" validator="validator"/>
 	<mvc:resources mapping="/resource/**" location="/resources/" />
 	<context:component-scan base-package="pl.bartek.webstore"/>
 	<mongo:mongo-client host="localhost" port="27017" id="mongoClient"/>
@@ -37,6 +37,11 @@
 		<bean class="pl.bartek.webstore.interceptor.PerformanceMonitorInterceptor"/>
 		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 			<property name="paramName" value="lang"/>
+		</bean>
+		<bean class="pl.bartek.webstore.interceptor.PromoCodeInterceptor">
+			<property name="promoCode" value="PROMO"/>
+			<property name="errorRedirect" value="/invalidPromoCode"/>
+			<property name="offerRedirect" value="/products"/>
 		</bean>
 	</mvc:interceptors>
 
@@ -85,6 +90,13 @@
 				<entry key="pl.bartek.webstore.entity.Product" value="PRODUCT"/>
 			</map>
 		</property>
+	</bean>
+
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="validationMessageSource" ref="messageSource"/>
+	</bean>
+	<bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor">
+		<property name="validator" ref="validator"/>
 	</bean>
 </beans>
 
