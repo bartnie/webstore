@@ -36,6 +36,7 @@ import pl.bartek.webstore.entity.Product;
 import pl.bartek.webstore.exception.NoProductsFoundUnderCategoryException;
 import pl.bartek.webstore.exception.ProductNotFoundException;
 import pl.bartek.webstore.service.product.ProductService;
+import pl.bartek.webstore.validator.ProductValidator;
 
 @Controller
 @RequestMapping("/products")
@@ -44,17 +45,19 @@ public class ProductController {
 	@Resource(name = "productService")
 	private ProductService productService;
 
+	@Resource(name = "productValidator")
+	private ProductValidator productValidator;
+
 	@RequestMapping
 	public String getProducts(final Model model) {
 		model.addAttribute("products", productService.findAll());
 		return "products";
 	}
 
-
 	@RequestMapping("/category/{category}")
 	public String getProductsInCategory(final Model model, @PathVariable final String category) {
 		final List<Product> products = productService.findByCategory(category);
-		if(products == null || products.isEmpty()){
+		if (products == null || products.isEmpty()) {
 			throw new NoProductsFoundUnderCategoryException();
 		}
 		model.addAttribute("products", products);
@@ -84,8 +87,8 @@ public class ProductController {
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addProduct(@ModelAttribute("product") @Valid final ProductDto body, final BindingResult result) {
-		if(result.hasErrors()){
-			return"addProduct";
+		if (result.hasErrors()) {
+			return "addProduct";
 		}
 		final String[] suppressedFields = result.getSuppressedFields();
 		if (suppressedFields.length > 0) {
@@ -113,14 +116,15 @@ public class ProductController {
 	@InitBinder
 	public void initialiseBinder(final WebDataBinder binder) {
 		binder.setDisallowedFields("unitsInOrder", "discontinued");
+		binder.setValidator(productValidator);
 	}
 
 	@ExceptionHandler(ProductNotFoundException.class)
-	public ModelAndView handleError(final HttpServletRequest request, final ProductNotFoundException exception){
+	public ModelAndView handleError(final HttpServletRequest request, final ProductNotFoundException exception) {
 		final ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("invalidProductId", exception.getProductId());
 		modelAndView.addObject("exception", exception);
-		modelAndView.addObject("url", request.getRequestURL()+"?"+request.getQueryString());
+		modelAndView.addObject("url", request.getRequestURL() + "?" + request.getQueryString());
 		modelAndView.setViewName("productNotFound");
 		return modelAndView;
 	}

@@ -5,32 +5,47 @@
 
 package pl.bartek.webstore.validator;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
 
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.lang.Nullable;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
-import pl.bartek.webstore.exception.ProductNotFoundException;
-import pl.bartek.webstore.service.product.ProductService;
+import pl.bartek.webstore.dto.ProductDto;
 
-public class ProductValidator implements ConstraintValidator<Product, Object> {
+public class ProductValidator implements Validator {
 
-	@Autowired
-	private ProductService productService;
+	private javax.validation.Validator beanValidator;
+
+	private Set<Validator> springValidators;
 
 	@Override
-	public void initialize(final Product constraintAnnotation) {
+	public boolean supports(final Class<?> aClass) {
+		return ProductDto.class.isAssignableFrom(aClass);
 	}
 
 	@Override
-	public boolean isValid(final Object value, final ConstraintValidatorContext contex) {
-		final Object fieldValue = new BeanWrapperImpl(value).getPropertyValue("id");
-		try {
-			productService.findById((String) fieldValue);
-		} catch (final ProductNotFoundException e) {
-			return true;
+	public void validate(@Nullable final Object o, final Errors errors) {
+		final Set<ConstraintViolation<Object>> constraintViolations = beanValidator.validate(o);
+		for (final ConstraintViolation constraintViolation : constraintViolations) {
+			final String propertyPath = constraintViolation.getPropertyPath().toString();
+			final String message = constraintViolation.getMessage();
+			errors.rejectValue(propertyPath, "", message);
 		}
-		return false;
+		for (final Validator validator : springValidators) {
+			validator.validate(o, errors);
+		}
+	}
+
+	@Required
+	public void setSpringValidators(final Set<Validator> springValidators) {
+		this.springValidators = springValidators;
+	}
+
+	@Required
+	public void setBeanValidator(final javax.validation.Validator beanValidator) {
+		this.beanValidator = beanValidator;
 	}
 }

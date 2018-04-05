@@ -15,7 +15,7 @@ import javax.validation.Payload;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ProductValidator.class)
+@Constraint(validatedBy = ProductIdValidator.class)
 @Documented
 public @interface Product {
 	String message() default "{pl.bartek.webstore.validator.Product.message}";
