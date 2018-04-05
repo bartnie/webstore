@@ -62,6 +62,10 @@
 		<property name="entityType" value="pl.bartek.webstore.entity.Customer"/>
 	</bean>
 
+	<bean id="cartDao" class="pl.bartek.webstore.dao.impl.CartDaoImpl" parent="abstractDao">
+		<property name="entityType" value="pl.bartek.webstore.entity.Cart"/>
+	</bean>
+
 	<bean id="orderService" class="pl.bartek.webstore.service.order.impl.OrderServiceImpl">
 		<property name="productDao" ref="productDao"/>
 	</bean>
@@ -80,6 +84,10 @@
 
 	<bean id="customerService" class="pl.bartek.webstore.service.customer.impl.CustomerServiceImpl">
 		<property name="customerDao" ref="customerDao"/>
+	</bean>
+
+	<bean id="cartService" class="pl.bartek.webstore.service.cart.impl.CartServiceImpl">
+		<property name="cartDao" ref="cartDao"/>
 	</bean>
 
 	<bean id="productReverseConverter" class="pl.bartek.webstore.converter.ProductReverseConverter"/>

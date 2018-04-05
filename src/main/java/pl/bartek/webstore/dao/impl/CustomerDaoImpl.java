@@ -9,5 +9,5 @@ import pl.bartek.webstore.dao.AbstractMongoDao;
 import pl.bartek.webstore.dao.CustomerDao;
 import pl.bartek.webstore.entity.Customer;
 
-public class CustomerDaoImpl extends AbstractMongoDao<Customer> implements CustomerDao{
+public class CustomerDaoImpl extends AbstractMongoDao<Customer> implements CustomerDao {
 }
