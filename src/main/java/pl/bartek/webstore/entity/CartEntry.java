@@ -13,10 +13,10 @@ public class CartEntry {
 	private int quantity;
 	private BigDecimal totalPrice;
 
-	public CartEntry(final Product product, final int quantity) {
+	public CartEntry(final Product product) {
 		this.product = product;
-		this.quantity = quantity;
-		updateTotalPrice();
+		this.quantity = 1;
+		totalPrice = product.getUnitPrice();
 	}
 
 	public void setProduct(final Product product) {
@@ -39,24 +39,7 @@ public class CartEntry {
 		return totalPrice;
 	}
 
-	public void updateTotalPrice() {
-		this.totalPrice = this.product.getUnitPrice().multiply(BigDecimal.valueOf(this.quantity));
-	}
-
-	@Override
-	public boolean equals(final Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-
-		final CartEntry cartEntry = (CartEntry) o;
-
-		return product != null ? product.equals(cartEntry.product) : cartEntry.product == null;
-	}
-
-	@Override
-	public int hashCode() {
-		return product != null ? product.hashCode() : 0;
+	public void setTotalPrice(final BigDecimal totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 }

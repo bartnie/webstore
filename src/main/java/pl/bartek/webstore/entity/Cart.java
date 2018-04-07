@@ -9,9 +9,11 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Cart {
+import org.springframework.data.mongodb.core.mapping.Document;
 
-	private String cartId;
+@Document(collection = "carts")
+public class Cart extends BaseEntity {
+
 	private Map<String, CartEntry> cartEntries;
 	private BigDecimal grandTotal;
 
@@ -21,65 +23,31 @@ public class Cart {
 	}
 
 	public Cart(final String cartId) {
-		this.cartId = cartId;
+		this();
+		this.id = cartId;
 	}
 
-	public void setCartId(final String cartId) {
-		this.cartId = cartId;
+	public String getId() {
+		return id;
 	}
 
-	public void setCartItems(final Map<String, CartEntry> cartItems) {
-		this.cartEntries = cartItems;
-		updateGrandTotal();
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public String getCartId() {
-		return cartId;
-	}
-
-	public Map<String, CartEntry> getCartItems() {
+	public Map<String, CartEntry> getCartEntries() {
 		return cartEntries;
+	}
+
+	public void setCartEntries(final Map<String, CartEntry> cartEntries) {
+		this.cartEntries = cartEntries;
 	}
 
 	public BigDecimal getGrandTotal() {
 		return grandTotal;
 	}
 
-	public void addCartEntry(final CartEntry cartEntry) {
-		final String productId = cartEntry.getProduct().getId();
-		if (cartEntries.containsKey(productId)) {
-			cartEntry.setQuantity(cartEntries.get(productId).getQuantity() + cartEntry.getQuantity());
-		}
-		cartEntries.put(productId, cartEntry);
-		updateGrandTotal();
-	}
-
-	public void removeCartEntry(final CartEntry cartEntry){
-		cartEntries.remove(cartEntry.getProduct().getId());
-		updateGrandTotal();
-	}
-
-	public void updateGrandTotal(){
-		grandTotal = new BigDecimal(0);
-		for(final CartEntry entry : cartEntries.values()){
-			grandTotal = grandTotal.add(entry.getTotalPrice());
-		}
-	}
-
-	@Override
-	public boolean equals(final Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-
-		final Cart cart = (Cart) o;
-
-		return cartId != null ? cartId.equals(cart.cartId) : cart.cartId == null;
-	}
-
-	@Override
-	public int hashCode() {
-		return cartId != null ? cartId.hashCode() : 0;
+	public void setGrandTotal(final BigDecimal grandTotal) {
+		this.grandTotal = grandTotal;
 	}
 }

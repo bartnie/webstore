@@ -5,7 +5,7 @@
 
 package pl.bartek.webstore.exception;
 
-public class ProductNotFoundException extends RuntimeException{
+public class ProductNotFoundException extends AbstractNotFoundException {
 	private static final long serialVersionUID = -976546782397L;
 	private final String productId;
 

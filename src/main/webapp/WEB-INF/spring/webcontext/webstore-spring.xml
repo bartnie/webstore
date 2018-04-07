@@ -88,7 +88,10 @@
 
 	<bean id="cartService" class="pl.bartek.webstore.service.cart.impl.CartServiceImpl">
 		<property name="cartDao" ref="cartDao"/>
+		<property name="cartEntryService" ref="cartEntryService"/>
 	</bean>
+
+	<bean id="cartEntryService" class="pl.bartek.webstore.service.cartentry.impl.CartEntryServiceImpl"/>
 
 	<bean id="productReverseConverter" class="pl.bartek.webstore.converter.ProductReverseConverter"/>
 
@@ -96,6 +99,7 @@
 		<property name="entityClassToEnumMapping">
 			<map value-type="pl.bartek.webstore.entity.EntityType">
 				<entry key="pl.bartek.webstore.entity.Product" value="PRODUCT"/>
+				<entry key="pl.bartek.webstore.entity.Cart" value="CART"/>
 			</map>
 		</property>
 	</bean>

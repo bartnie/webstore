@@ -6,13 +6,17 @@
 package pl.bartek.webstore.service.cart;
 
 import pl.bartek.webstore.entity.Cart;
+import pl.bartek.webstore.entity.CartEntry;
 
 public interface CartService {
-	Cart create(Cart cart);
+	Cart findById(final String id);
 
-	Cart read(String cartId);
+	void add(final Cart cartToSave);
 
-	Cart update(String cartId, Cart cart);
+	void removeById(final String id);
 
-	void delete(String cartId);
+	void addCartEntry(final Cart cart, final CartEntry cartEntry);
+
+	void removeCartEntry(final Cart cart, final CartEntry cartEntry);
+
 }

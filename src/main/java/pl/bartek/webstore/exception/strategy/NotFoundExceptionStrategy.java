@@ -10,6 +10,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Required;
 
 import pl.bartek.webstore.entity.EntityType;
+import pl.bartek.webstore.exception.CartNotFoundException;
 import pl.bartek.webstore.exception.ProductNotFoundException;
 
 public class NotFoundExceptionStrategy {
@@ -21,6 +22,9 @@ public class NotFoundExceptionStrategy {
 		switch (entityType) {
 		case PRODUCT:
 			throw new ProductNotFoundException(context.get("id"));
+
+		case CART:
+			throw new CartNotFoundException(context.get("id"));
 		}
 	}
 

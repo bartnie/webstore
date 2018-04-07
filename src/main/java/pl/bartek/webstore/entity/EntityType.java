@@ -6,5 +6,5 @@
 package pl.bartek.webstore.entity;
 
 public enum EntityType {
-	PRODUCT,CUSTOMER
+	PRODUCT,CUSTOMER, CART
 }
