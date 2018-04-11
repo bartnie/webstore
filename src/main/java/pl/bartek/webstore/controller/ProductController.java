@@ -113,8 +113,8 @@ public class ProductController {
 		productService.removeById(id);
 	}
 
-	@InitBinder
-	public void initialiseBinder(final WebDataBinder binder) {
+	@InitBinder("ProductDto")
+	protected void initialiseProductDtoBinder(final WebDataBinder binder) {
 		binder.setDisallowedFields("unitsInOrder", "discontinued");
 		binder.setValidator(productValidator);
 	}
