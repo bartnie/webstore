@@ -7,6 +7,7 @@
     <title>
         <spring:message code="products.title"/>
     </title>
+
 </head>
 <body>
 <section>

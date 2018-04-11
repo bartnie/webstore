@@ -78,6 +78,11 @@ public class CartRestController {
 		return new ResponseEntity(HttpStatus.ACCEPTED);
 	}
 
+	@RequestMapping(value = "/current/cartId")
+	public String getCurrentCartId(final HttpServletRequest request){
+		return request.getSession().getId();
+	}
+
 	@ExceptionHandler(AbstractNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Invalid request, check sent data")
 	public void handleClientErrors(final Exception e) {
